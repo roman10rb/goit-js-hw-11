@@ -68,9 +68,6 @@ const searchPhotos = (event) => {
         loadMoreBtnEl.classList.add('is-hidden');
         }
        
-    //    if (data.hits.length <= pixabayApi.per_page) {
-    //         loadMoreBtnEl.classList.add('is-hidden');
-    //     }
     }).catch((error) => {
         console.log(error.message);
     Notify.info('Images not found');
@@ -86,10 +83,6 @@ const loadMoreBtnClick = () => {
     pixabayApi.page += 1;
     pixabayApi.fetchPhotos().then((data) => {
         
-        // if (data.hits.length <= pixabayApi.per_page) {
-        //     Notify.info('Too many matches found. Please enter a more specific name.');
-        //     loadMoreBtnEl.classList.add('is-hidden');
-        // }
         console.log(data.hits.length);
         for (let i = 0; i < data.hits.length; i += 1){
             
