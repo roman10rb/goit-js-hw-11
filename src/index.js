@@ -14,19 +14,20 @@ const loadMoreBtnEl = document.querySelector('.load-more');
 
 
 const pixabayApi = new PixabayApi();
+
 const reset = () => {
     galleryEl.innerHTML = '';
     pixabayApi.page = 0;
 }
 
-const searchPhotos = (event) => {
+const searchPhotos = async (event) => {
     event.preventDefault();
     reset();
     const searchQuery = event.target.elements['searchQuery'].value.trim();
-    
     pixabayApi.q = searchQuery;
     pixabayApi.page += 1;
-    pixabayApi.fetchPhotos().then((data) => {
+    
+     pixabayApi.fetchPhotos().then((data) => {
        
         if (pixabayApi.q === '' || data.totalHits === 0 ) {
              Notify.failure("Sorry, there are no images matching your search query. Please try again.");
@@ -83,7 +84,6 @@ const loadMoreBtnClick = () => {
     pixabayApi.page += 1;
     pixabayApi.fetchPhotos().then((data) => {
         
-        console.log(data.hits.length);
         for (let i = 0; i < data.hits.length; i += 1){
             
             galleryEl.insertAdjacentHTML('beforeend',
@@ -122,12 +122,14 @@ loadMoreBtnEl.addEventListener('click', loadMoreBtnClick);
 searchFormEl.addEventListener('submit', searchPhotos);
 
 
-function showBigPicture () {
+ function showBigPicture () {
   let gallery = new SimpleLightbox('.gallery a');
   gallery.captionDelay = 250;
 };
 
- 
+
+
+
 
 
 

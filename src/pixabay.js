@@ -5,14 +5,13 @@ export class PixabayApi {
     page = 0;
     per_page = 40;
    
-    fetchPhotos() {
+    async fetchPhotos() {
 
-        return fetch(`${this.#BASE_URL}?key=${this.#API_KEY}&q=${this.q}&image_type=photo&page=${this.page}&per_page=${this.per_page}&orientation=horizontal&safesearch=true`).then(res => {
-            if (!res.ok) {
-                throw new Error(res.status);
-            };
-            return res.json()
-        });
+        const response = await fetch(`${this.#BASE_URL}?key=${this.#API_KEY}&q=${this.q}&image_type=photo&page=${this.page}&per_page=${this.per_page}&orientation=horizontal&safesearch=true`);
+
+       
+        return await response.json();
+        }
     }
   
-}
+
