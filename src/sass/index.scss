@@ -125,3 +125,8 @@ b{
     scale: 1.1;
     cursor: pointer;
 }
+
+img:hover{
+    border-radius: 20px;
+    transition: all ease-out 100ms;
+}
