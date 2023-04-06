@@ -76,6 +76,8 @@ b{
     display: flex;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 
@@ -117,12 +119,12 @@ b{
     box-shadow: 1px 1px 4px 0px;
 }
 .load-more{
-    margin-top: 10px;
+    
     background-color: rgb(248, 241, 241);
         height: 30px;
         border-radius: 10px;
         color: rgb(108, 108, 232);
-        ;
+        
         border-color: rgb(108, 108, 232);
 }
 .load-more:hover{
