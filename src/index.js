@@ -32,7 +32,7 @@ event.preventDefault();
 
 
         const res = await pixabayApi.fetchPhotos();
-        console.log(res.data)
+        
         if (pixabayApi.q === '' || res.data.totalHits === 0 ) {
              Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             loadMoreBtnEl.classList.add('is-hidden');
