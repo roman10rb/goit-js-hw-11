@@ -5,9 +5,6 @@ import SimpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-
-
-
 const searchFormEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const loadMoreBtnEl = document.querySelector('.load-more');
@@ -20,6 +17,10 @@ const reset = () => {
     pixabayApi.page = 0;
 }
 
+
+
+
+
 const searchPhotos = async (event) => {
     try {
 
@@ -30,21 +31,20 @@ event.preventDefault();
     pixabayApi.page += 1;
 
 
-        const data = await pixabayApi.fetchPhotos();
-        
-        
-        if (pixabayApi.q === '' || data.totalHits === 0 ) {
+        const res = await pixabayApi.fetchPhotos();
+        console.log(res.data)
+        if (pixabayApi.q === '' || res.data.totalHits === 0 ) {
              Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             loadMoreBtnEl.classList.add('is-hidden');
             return;
         }; 
 
         
-         createCard(data);
+         createCard(res.data);
          showBigPicture();
          
         loadMoreBtnEl.classList.remove('is-hidden');
-        if (data.hits.length < pixabayApi.per_page) {
+        if (res.data.hits.length < pixabayApi.per_page) {
         Notify.failure("We're sorry, but you've reached the end of search results.");
         loadMoreBtnEl.classList.add('is-hidden');
         }
@@ -61,12 +61,12 @@ event.preventDefault();
 const loadMoreBtnClick = async () => {
     try {
         pixabayApi.page += 1;
-        const data = await pixabayApi.fetchPhotos();
+        const res = await pixabayApi.fetchPhotos();
 
-        createCard(data);
+        createCard(res.data);
         showBigPicture();
         
-        if (data.hits.length < pixabayApi.per_page) {
+        if (res.data.hits.length < pixabayApi.per_page) {
         Notify.failure("We're sorry, but you've reached the end of search results.");
         loadMoreBtnEl.classList.add('is-hidden');
         }   
@@ -112,8 +112,6 @@ function createCard(data) {
                     
 }
 }
-
-
 
 
 
