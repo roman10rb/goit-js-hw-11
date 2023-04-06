@@ -53,7 +53,7 @@ event.preventDefault();
 
     } catch (error)  {
         console.log(error.message);
-        Notify.info('Images not found');
+        Notify.failure('Images not found');
         loadMoreBtnEl.classList.add('is-hidden');
     }
 }
