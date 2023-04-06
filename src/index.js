@@ -38,10 +38,8 @@ event.preventDefault();
             loadMoreBtnEl.classList.add('is-hidden');
             return;
         }; 
-
-        
-         createCard(res.data);
-         showBigPicture();
+        createCards(res.data.hits)
+        showBigPicture();
          
         loadMoreBtnEl.classList.remove('is-hidden');
         if (res.data.hits.length < pixabayApi.per_page) {
@@ -62,8 +60,7 @@ const loadMoreBtnClick = async () => {
     try {
         pixabayApi.page += 1;
         const res = await pixabayApi.fetchPhotos();
-
-        createCard(res.data);
+        createCards(res.data.hits);
         showBigPicture();
         
         if (res.data.hits.length < pixabayApi.per_page) {
@@ -86,32 +83,27 @@ searchFormEl.addEventListener('submit', searchPhotos);
   gallery.captionDelay = 250;
 };
 
-function createCard(data) {
-    for (let i = 0; i < data.hits.length; i += 1){
-
-            galleryEl.insertAdjacentHTML('beforeend',
-                `<div class="photo-card">
-                <div class="container"><a class="gallery__item" href=${data.hits[i].largeImageURL}>
-         <img src="${data.hits[i].webformatURL}" alt="" loading="lazy" />
+function createCards(data) {
+    const createsome = data.map(({ largeImageURL, webformatURL, likes, views, comments, downloads }) => {
+        return `<div class="photo-card">
+                <div class="container"><a class="gallery__item" href=${largeImageURL}>
+         <img src="${webformatURL}" alt="" loading="lazy" />
       </a></div>
   <div class="info">
     <p class="info-item">
-      <b>Likes <span class="info-value">${data.hits[i].likes}</span></b>
+      <b>Likes <span class="info-value">${likes}</span></b>
     </p>
     <p class="info-item">
-      <b>Views <span class="info-value">${data.hits[i].views}</span></b>
+      <b>Views <span class="info-value">${views}</span></b>
     </p>
     <p class="info-item">
-      <b>Comments <span class="info-value">${data.hits[i].comments}</span></b>
+      <b>Comments <span class="info-value">${comments}</span></b>
     </p>
     <p class="info-item">
-      <b>Downloads <span class="info-value">${data.hits[i].downloads}</span></b>
+      <b>Downloads <span class="info-value">${downloads}</span></b>
     </p>
   </div>
-</div>`);
-                    
-}
-}
+</div>`}).join('');
 
-
-
+    galleryEl.insertAdjacentHTML('beforeend', createsome);
+};
