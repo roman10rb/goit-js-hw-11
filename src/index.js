@@ -9,12 +9,15 @@ const searchFormEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const loadMoreBtnEl = document.querySelector('.load-more');
 
+let countPage = 1;
+
 
 const pixabayApi = new PixabayApi();
 
 const reset = () => {
     galleryEl.innerHTML = '';
-    pixabayApi.page = 0;
+  pixabayApi.page = 0;
+  countPage = 1;
 }
 
 
@@ -29,44 +32,60 @@ event.preventDefault();
     const searchQuery = event.target.elements['searchQuery'].value.trim();
     pixabayApi.q = searchQuery;
     pixabayApi.page += 1;
+      countPage = 1;
+    const res = await pixabayApi.fetchPhotos();
+    createCards(res.data.hits)
+      showBigPicture();  
+      
+      totalPages = Math.ceil(res.data.totalHits/40)
+      console.log(totalPages)
+      console.log(countPage)
 
 
-        const res = await pixabayApi.fetchPhotos();
+       if (countPage < totalPages) {
+        loadMoreBtnEl.classList.remove('is-hidden');
+      };
+
         
         if (pixabayApi.q === '' || res.data.totalHits === 0 ) {
              Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-            loadMoreBtnEl.classList.add('is-hidden');
+            
             return;
         }; 
-        createCards(res.data.hits)
-        showBigPicture();
-         
-        loadMoreBtnEl.classList.remove('is-hidden');
+        
+        
         if (res.data.hits.length < pixabayApi.per_page) {
         Notify.failure("We're sorry, but you've reached the end of search results.");
-        loadMoreBtnEl.classList.add('is-hidden');
-        }
+      };
        
     
 
     } catch (error)  {
         console.log(error.message);
-        Notify.failure('Images not found');
-        loadMoreBtnEl.classList.add('is-hidden');
+        Notify.failure('Images not found'); 
     }
 }
 
 const loadMoreBtnClick = async () => {
     try {
-        pixabayApi.page += 1;
-        const res = await pixabayApi.fetchPhotos();
-        createCards(res.data.hits);
-        showBigPicture();
-        
+      
+      pixabayApi.page += 1;
+      const res = await pixabayApi.fetchPhotos();
+      totalPages = Math.ceil(res.data.totalHits/40)
+      createCards(res.data.hits);
+      countPage += 1;
+console.log(totalPages)
+      console.log(countPage)
+       if (countPage === totalPages) {
+        loadMoreBtnEl.classList.add('is-hidden');
+      };
+
+      showBigPicture();
+      
         if (res.data.hits.length < pixabayApi.per_page) {
         Notify.failure("We're sorry, but you've reached the end of search results.");
-        loadMoreBtnEl.classList.add('is-hidden');
-        }   
+      };
+      
     } catch (e) {
         console.log(e.status);
     }
